@@ -13,7 +13,9 @@ import {
   ShieldAlert,
   Clock,
   Send,
+  Settings,
 } from "lucide-react";
+import { EventSettingsModal } from "../components/EventSettingsModal";
 
 export const AdminDashboardPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -39,6 +41,8 @@ export const AdminDashboardPage: React.FC = () => {
     api.attendees.getRoster,
     event ? { eventId: event._id } : "skip"
   );
+
+  const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
 
   // Trigger reconciled CSV export
   const handleExportReconciledLog = () => {
@@ -113,6 +117,15 @@ export const AdminDashboardPage: React.FC = () => {
               <FileSpreadsheet className="w-4 h-4 text-wiser-navy" />
               <span>Manage Attendees ({roster?.length ?? 0})</span>
             </Link>
+
+            <button
+              type="button"
+              onClick={() => setIsSettingsOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-wiser-bg hover:bg-slate-100 text-slate-700 text-xs font-semibold rounded-xl border border-wiser-border transition"
+            >
+              <Settings className="w-4 h-4 text-wiser-navy" />
+              <span>Event & RM Settings</span>
+            </button>
 
             <Link
               to={`/admin/events/${event.slug}/dispatch`}
@@ -359,6 +372,13 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Event Configuration & RM Modal */}
+      <EventSettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        event={event}
+      />
     </div>
   );
 };

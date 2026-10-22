@@ -13,7 +13,9 @@ import {
   FileCheck,
   AlertCircle,
   Copy,
+  UserPlus,
 } from "lucide-react";
+import { AddAttendeeModal } from "../components/AddAttendeeModal";
 
 export const AttendeeManagerPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -21,6 +23,10 @@ export const AttendeeManagerPage: React.FC = () => {
   const event = useQuery(api.events.getEventBySlug, slug ? { slug } : "skip");
   const roster = useQuery(
     api.attendees.getRoster,
+    event ? { eventId: event._id } : "skip"
+  );
+  const inviters = useQuery(
+    api.inviters.listInviters,
     event ? { eventId: event._id } : "skip"
   );
 
@@ -31,6 +37,7 @@ export const AttendeeManagerPage: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -116,6 +123,15 @@ export const AttendeeManagerPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setIsAddModalOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold text-xs rounded-xl transition shadow-sm"
+          >
+            <UserPlus className="w-4 h-4" />
+            <span>+ Add Invitee</span>
+          </button>
+
           <input
             ref={fileInputRef}
             type="file"
@@ -282,6 +298,14 @@ export const AttendeeManagerPage: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Manual Invitee Creation Modal */}
+      <AddAttendeeModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        eventId={event._id}
+        inviters={inviters ?? []}
+      />
     </div>
   );
 };

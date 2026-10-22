@@ -33,9 +33,9 @@ export class GateLocalDatabase extends Dexie {
 
   constructor() {
     super("GateLocalDatabase");
-    this.version(1).stores({
+    this.version(2).stores({
       attendees: "ticketCode, attendeeId, category",
-      checkInQueue: "++localId, clientCapturedAt, syncStatus, attendeeId",
+      checkInQueue: "++localId, ticketCode, clientCapturedAt, syncStatus, attendeeId",
     });
   }
 }

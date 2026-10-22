@@ -16,6 +16,7 @@ import type * as delivery from "../delivery.js";
 import type * as eventSessions from "../eventSessions.js";
 import type * as events from "../events.js";
 import type * as http from "../http.js";
+import type * as inviters from "../inviters.js";
 import type * as seed from "../seed.js";
 import type * as zoho from "../zoho.js";
 
@@ -34,6 +35,7 @@ declare const fullApi: ApiFromModules<{
   eventSessions: typeof eventSessions;
   events: typeof events;
   http: typeof http;
+  inviters: typeof inviters;
   seed: typeof seed;
   zoho: typeof zoho;
 }>;

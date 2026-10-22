@@ -284,3 +284,50 @@ export const reissueTicketCode = mutation({
     return { newTicketCode };
   },
 });
+
+/**
+ * Manually add a single attendee with auto-generated nanoid token.
+ */
+export const createAttendee = mutation({
+  args: {
+    eventId: v.id("events"),
+    firstName: v.string(),
+    lastName: v.string(),
+    email: v.string(),
+    contactNumber: v.optional(v.string()),
+    designation: v.optional(v.string()),
+    organization: v.optional(v.string()),
+    category: v.union(
+      v.literal("SPONSOR"),
+      v.literal("VISITOR"),
+      v.literal("VIP"),
+      v.literal("ORGANIZER")
+    ),
+    referrerName: v.optional(v.string()),
+    referrerEmail: v.optional(v.string()),
+    groupCode: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const ticketCode = nanoid(12);
+    const attendeeId = await ctx.db.insert("attendees", {
+      eventId: args.eventId,
+      ticketCode,
+      ticketStatus: "ACTIVE",
+      firstName: args.firstName.trim(),
+      lastName: args.lastName.trim(),
+      email: args.email.trim().toLowerCase(),
+      contactNumber: args.contactNumber?.trim(),
+      designation: args.designation?.trim(),
+      organization: args.organization?.trim(),
+      category: args.category,
+      referrerName: args.referrerName?.trim(),
+      referrerEmail: args.referrerEmail?.trim().toLowerCase(),
+      groupCode: args.groupCode?.trim(),
+      rsvpStatus: "PENDING",
+      checkInStatus: "REGISTERED",
+    });
+
+    return { attendeeId, ticketCode };
+  },
+});
+

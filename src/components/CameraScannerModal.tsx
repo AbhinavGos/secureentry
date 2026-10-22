@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { X, Camera, Flashlight, AlertCircle } from "lucide-react";
+import { X, Camera, Flashlight, AlertCircle, RefreshCw } from "lucide-react";
 import { BrowserQRCodeReader, IScannerControls } from "@zxing/browser";
 import { extractToken } from "../hooks/useScanner";
 
@@ -19,6 +19,9 @@ export const CameraScannerModal: React.FC<CameraScannerModalProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [torchOn, setTorchOn] = useState(false);
   const [hasTorch, setHasTorch] = useState(false);
+  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+  const [selectedDeviceIndex, setSelectedDeviceIndex] = useState<number>(0);
+  const isScanningRef = useRef<boolean>(false);
 
   useEffect(() => {
     if (!isOpen) {
@@ -26,6 +29,7 @@ export const CameraScannerModal: React.FC<CameraScannerModalProps> = ({
         controlsRef.current.stop();
         controlsRef.current = null;
       }
+      isScanningRef.current = false;
       return;
     }
 
@@ -37,15 +41,38 @@ export const CameraScannerModal: React.FC<CameraScannerModalProps> = ({
         setError(null);
         if (!videoRef.current) return;
 
+        // Discover video cameras
+        const videoInputDevices = await BrowserQRCodeReader.listVideoInputDevices();
+        if (isMounted) {
+          setDevices(videoInputDevices);
+        }
+
+        let targetDeviceId: string | undefined = undefined;
+
+        if (videoInputDevices.length > 0) {
+          // If device index explicitly chosen
+          if (videoInputDevices[selectedDeviceIndex]) {
+            targetDeviceId = videoInputDevices[selectedDeviceIndex].deviceId;
+          } else {
+            // Find back / environment camera
+            const backCamera = videoInputDevices.find((d) =>
+              /back|rear|environment/i.test(d.label)
+            );
+            targetDeviceId =
+              backCamera?.deviceId ?? videoInputDevices[videoInputDevices.length - 1]?.deviceId;
+          }
+        }
+
         const controls = await codeReader.decodeFromVideoDevice(
-          undefined, // Default to back camera
+          targetDeviceId,
           videoRef.current,
           (result) => {
-            if (result && isMounted) {
+            if (result && isMounted && !isScanningRef.current) {
               const text = result.getText();
-              if (text) {
+              if (text && text.trim().length > 0) {
+                isScanningRef.current = true;
                 if ("vibrate" in navigator) {
-                  navigator.vibrate(100);
+                  navigator.vibrate(120);
                 }
                 const token = extractToken(text);
                 onScan(token);
@@ -87,7 +114,7 @@ export const CameraScannerModal: React.FC<CameraScannerModalProps> = ({
         controlsRef.current = null;
       }
     };
-  }, [isOpen, onScan]);
+  }, [isOpen, selectedDeviceIndex, onScan]);
 
   const toggleTorch = async () => {
     if (!videoRef.current) return;
@@ -106,6 +133,11 @@ export const CameraScannerModal: React.FC<CameraScannerModalProps> = ({
     }
   };
 
+  const flipCamera = () => {
+    if (devices.length <= 1) return;
+    setSelectedDeviceIndex((prev) => (prev + 1) % devices.length);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -118,6 +150,16 @@ export const CameraScannerModal: React.FC<CameraScannerModalProps> = ({
             <h3 className="font-semibold text-base">Camera Viewfinder</h3>
           </div>
           <div className="flex items-center gap-2">
+            {devices.length > 1 && (
+              <button
+                type="button"
+                onClick={flipCamera}
+                className="p-2 rounded-full bg-slate-700 hover:bg-slate-600 text-white transition"
+                title="Switch Camera"
+              >
+                <RefreshCw className="w-4 h-4" />
+              </button>
+            )}
             {hasTorch && (
               <button
                 type="button"

@@ -816,8 +816,33 @@ The implementation is partitioned into **5 sequential, incremental phases**. Eac
 
 ---
 
-*Drafted with EGM*
+## 9. Post-Deployment Enhancements & Mobile Scanning Resolution
 
---------------------------------------------------------------------------------
+### 9.1 Root Cause Diagnosis: Mobile Camera Scan Standby Drop
+* **Defect**: On mobile devices, scanning a valid QR pass via the in-app camera modal closed the viewfinder and immediately returned to the standby "Ready to Scan" screen without admitting the attendee or incrementing counters.
+* **Root Causes**:
+  1. **Dexie Indexing Defect**: In `src/lib/db.ts`, the `checkInQueue` table was indexed as `"++localId, clientCapturedAt, syncStatus, attendeeId"`. During scan evaluation, `localDb.checkInQueue.where("ticketCode")` was queried, causing Dexie to throw an unhandled `KeyPathError: KeyPath ticketCode on object store checkInQueue is not indexed`.
+  2. **Cache Hydration Race Condition**: When a volunteer device accessed the terminal for the first time, local IndexedDB was empty. The scanner evaluated local cache first and aborted immediately as `INVALID_PASS` without falling back to Convex online verification.
+  3. **Silent Asynchronous Error Handling**: `handleScan` in `GateCheckInPage.tsx` did not wrap `evaluateScan` in a `try...catch` block, silently discarding promise rejections and dropping the UI back to the idle standby screen.
+* **Resolution**:
+  * Index `ticketCode` in Dexie's `checkInQueue` schema.
+  * Implement an online server fallback in `evaluateScan`: if an attendee token is missing from local IndexedDB, directly verify with Convex cloud rather than rejecting.
+  * Wrap `handleScan` in explicit error handling with audible and visual error alert cards.
+  * Enhance `CameraScannerModal` with environment camera selection (`facingMode: { ideal: "environment" }`) and a Camera Switcher toggle.
+
+### 9.2 Manual Invitee (Attendee) Ingestion
+* Provide a single-attendee creation modal accessible from the Attendee Manager screen.
+* Inputs: First Name, Last Name, Email, Contact Number (auto-normalized to +91), Organization, Designation, Category (`VIP`, `SPONSOR`, `VISITOR`, `ORGANIZER`), and assigned Relationship Manager.
+* System generates an authoritative 12-char nanoid `ticketCode`, inserts the active record into Convex, and updates the local roster in real time.
+
+### 9.3 Inviter (Relationship Manager) & Session Directory
+* **Schema Addition**: Dedicated `inviters` table in Convex recording `{ eventId, name, email, phone, designation }`.
+* **Admin Management Console**: An "Event & RM Settings" modal on the Admin Dashboard allowing organizers to:
+  * Add and edit Relationship Managers (Inviters).
+  * Add and manage Breakout Sessions (title, location, timings, primary flag).
+  * Update Gate access passcodes and entrance gate names.
+* **Dynamic Linking**: Newly added inviters immediately populate the RM dropdown in both the manual attendee creator and the CSV auto-mapper.
+
+---
 
 *Drafted with EGM*

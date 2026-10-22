@@ -80,20 +80,30 @@ export const GateCheckInPage: React.FC = () => {
     async (rawToken: string, source: "SCANNER_HID" | "CAMERA" | "MANUAL" = "SCANNER_HID") => {
       if (!sessionState) return;
 
-      const result = await evaluateScan(rawToken, source);
-      setActiveCard(result);
+      try {
+        const result = await evaluateScan(rawToken, source);
+        setActiveCard(result);
 
-      if (result.status === "ADMITTED") {
-        playSuccessChime();
-      } else {
+        if (result.status === "ADMITTED") {
+          playSuccessChime();
+        } else {
+          playErrorBuzz();
+        }
+
+        // Auto-dismiss valid card back to standby after 3.2 seconds
+        if (result.status === "ADMITTED") {
+          setTimeout(() => {
+            setActiveCard((prev) => (prev?.passId === result.passId ? null : prev));
+          }, 3200);
+        }
+      } catch (err: unknown) {
+        console.error("Scan processing error:", err);
+        setActiveCard({
+          status: "INVALID_PASS",
+          passId: rawToken,
+          message: err instanceof Error ? err.message : "Error verifying pass.",
+        });
         playErrorBuzz();
-      }
-
-      // Auto-dismiss valid card back to standby after 3.2 seconds
-      if (result.status === "ADMITTED") {
-        setTimeout(() => {
-          setActiveCard((prev) => (prev?.passId === result.passId ? null : prev));
-        }, 3200);
       }
     },
     [sessionState, evaluateScan]

@@ -14,6 +14,28 @@ export const seedDemoEvent = mutation({
       .first();
 
     if (existing) {
+      const existingInviters = await ctx.db
+        .query("inviters")
+        .withIndex("by_event", (q) => q.eq("eventId", existing._id))
+        .collect();
+
+      if (existingInviters.length === 0) {
+        await ctx.db.insert("inviters", {
+          eventId: existing._id,
+          name: "Priya Singh",
+          email: "priya@wiserstack.com",
+          phone: "+919876500001",
+          designation: "Principal Relationship Manager",
+        });
+        await ctx.db.insert("inviters", {
+          eventId: existing._id,
+          name: "Amit Kumar",
+          email: "amit@wiserstack.com",
+          phone: "+919876500002",
+          designation: "VP Strategic Partnerships",
+        });
+      }
+
       return { success: true, eventId: existing._id, slug, alreadyExisted: true };
     }
 

@@ -137,12 +137,68 @@ export function useOfflineSync(
       const cleanCode = ticketCode.trim();
 
       // Check local cache first to get attendee metadata
-      const localRecord = await localDb.attendees
+      let localRecord = await localDb.attendees
         .where("ticketCode")
         .equals(cleanCode)
         .first();
 
       if (!localRecord) {
+        // Online fallback: If not in local Dexie yet, verify directly with Convex server
+        if (navigator.onLine) {
+          try {
+            const serverResult = await recordCheckInMutation({
+              eventId,
+              sessionId,
+              ticketCode: cleanCode,
+              gateId,
+              operatorId: gateId,
+              operatorName,
+              clientCapturedAt: Date.now(),
+              source,
+              isOfflineSync: false,
+            });
+
+            // Populate local Dexie cache so subsequent checks and duplicate detections work
+            await localDb.attendees.put({
+              ticketCode: cleanCode,
+              attendeeId: serverResult.attendeeId,
+              category: serverResult.category as any,
+              checkedInSessionIds: [sessionId],
+              checkInStatus: "CHECKED_IN",
+            });
+
+            return {
+              status: "ADMITTED",
+              category: serverResult.category,
+              passId: cleanCode,
+              isOffline: false,
+            };
+          } catch (err: unknown) {
+            const errorMsg = err instanceof Error ? err.message : String(err);
+            if (errorMsg.includes("ALREADY_CHECKED_IN")) {
+              return {
+                status: "ALREADY_CHECKED_IN",
+                passId: cleanCode,
+                message: errorMsg.replace("Error: ", ""),
+                isOffline: false,
+              };
+            }
+            if (errorMsg.includes("SESSION_RESTRICTED")) {
+              return {
+                status: "SESSION_RESTRICTED",
+                passId: cleanCode,
+                message: errorMsg.replace("Error: ", ""),
+                isOffline: false,
+              };
+            }
+            return {
+              status: "INVALID_PASS",
+              passId: cleanCode,
+              message: errorMsg.replace("Error: ", "").replace("INVALID_TICKET: ", ""),
+            };
+          }
+        }
+
         return {
           status: "INVALID_PASS",
           message: "Pass not found or invalid token.",
@@ -193,7 +249,7 @@ export function useOfflineSync(
       if (navigator.onLine) {
         try {
           const timeoutPromise = new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("TIMEOUT")), 350)
+            setTimeout(() => reject(new Error("TIMEOUT")), 900)
           );
 
           const result = (await Promise.race([

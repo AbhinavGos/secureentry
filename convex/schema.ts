@@ -118,4 +118,12 @@ export default defineSchema({
   })
     .index("by_event_status", ["eventId", "status"])
     .index("by_attendee", ["attendeeId"]),
+
+  inviters: defineTable({
+    eventId: v.id("events"),
+    name: v.string(),
+    email: v.string(),
+    phone: v.optional(v.string()),
+    designation: v.optional(v.string()),
+  }).index("by_event", ["eventId"]),
 });
