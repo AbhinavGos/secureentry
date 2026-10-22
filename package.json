@@ -1,0 +1,49 @@
+{
+  "name": "real-time-event-check-in",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && node -e \"const fs=require('fs'); if(fs.existsSync('dist/index.html')) fs.copyFileSync('dist/index.html', 'dist/404.html');\"",
+    "preview": "vite preview",
+    "seed": "convex run seed:seedDemoEvent",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@convex-dev/auth": "^0.0.71",
+    "@zxing/browser": "^0.1.5",
+    "@zxing/library": "^0.21.3",
+    "canvas-confetti": "^1.9.3",
+    "clsx": "^2.1.1",
+    "convex": "^1.17.4",
+    "dexie": "^4.0.1",
+    "jszip": "^3.10.1",
+    "lucide-react": "^0.460.0",
+    "nanoid": "^5.0.6",
+    "papaparse": "^5.4.1",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.22.0",
+    "tailwind-merge": "^2.5.4"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/jsdom": "^30.0.0",
+    "@types/papaparse": "^5.3.15",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.19",
+    "jsdom": "^29.1.1",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.4"
+  }
+}

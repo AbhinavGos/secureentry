@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorldMark 6 Launch Event — Guest Registration & Desk Flow</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #F5F7FD;
+      color: #0F172A;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .wiser-navy { color: #002060; }
+    .bg-wiser-navy { background-color: #002060; }
+    .wiser-blue { color: #5B6CB0; }
+    .bg-wiser-blue-light { background-color: #E8ECF8; }
+    .bg-wiser-accent { background-color: #BCC0E8; }
+    .wiser-gold { color: #D4AF37; }
+    .bg-wiser-gold { background-color: #D4AF37; }
+    .border-wiser { border-color: #E8ECF8; }
+
+    /* Slide Deck Transitions */
+    .slide {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+      transform: translateY(6px);
+    }
+    .slide.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Print / PDF Export Styles (Exact A4 Landscape 1 Slide per Page) */
+    @page {
+      size: 297mm 210mm;
+      margin: 0;
+    }
+
+    @media print {
+      html, body {
+        width: 297mm !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      main {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+      }
+      .slide {
+        display: flex !important;
+        opacity: 1 !important;
+        transform: none !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        max-height: 210mm !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        margin: 0 !important;
+        padding: 10mm 15mm !important;
+        box-sizing: border-box !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        background: white !important;
+        overflow: hidden !important;
+        justify-content: space-between !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between select-none">
+
+  <!-- Top Navigation Bar -->
+  <header class="no-print bg-white/95 backdrop-blur-md border-b border-[#E8ECF8] sticky top-0 z-50 px-6 py-2.5 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-4">
+      <img src="assets/wiserstack-logo.png" alt="WiserStack" class="h-6 sm:h-7 object-contain" />
+      <div class="h-5 w-[1px] bg-slate-200"></div>
+      <div>
+        <h1 class="text-xs sm:text-sm font-bold text-[#002060] tracking-tight">WorldMark 6 Launch Event</h1>
+        <p class="text-[10px] sm:text-xs text-slate-500 font-medium">Guest Registration & Desk Flow • Marketing Briefing</p>
+      </div>
+    </div>
+
+    <!-- Slide Indicators & Controls -->
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1" id="dotsContainer"></div>
+      <div class="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#E8ECF8] text-[#002060]" id="slideCounter">
+        1 / 9
+      </div>
+      <div class="flex items-center gap-1 border-l border-slate-200 pl-3">
+        <button onclick="prevSlide()" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-700 transition" title="Previous Slide (Left Arrow)">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button onclick="nextSlide()" class="p-1.5 rounded-lg hover:bg-slate-100 text-slate-700 transition" title="Next Slide (Right Arrow)">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <button onclick="window.print()" class="ml-2 px-3 py-1.5 rounded-lg bg-white border border-[#E8ECF8] hover:bg-[#F5F7FD] text-xs font-semibold text-[#002060] flex items-center gap-1.5 shadow-sm transition" title="Print to PDF">
+          <svg class="w-4 h-4 text-[#002060]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          Export PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Slide Stage Container -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 md:p-8 flex items-center justify-center">
+
+    <!-- ================= SLIDE 1: Title & Executive Overview ================= -->
+    <section class="slide active flex-col w-full bg-white rounded-2xl border border-[#E8ECF8] shadow-xl overflow-hidden p-6 sm:p-10 relative" data-index="1">
+      <div class="absolute -right-20 -top-20 w-72 h-72 bg-[#BCC0E8]/20 rounded-full blur-3xl pointer-events-none no-print"></div>
+      <div class="absolute -left-20 -bottom-20 w-72 h-72 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none no-print"></div>
+      
+      <div class="flex items-center justify-between border-b border-[#E8ECF8] pb-4 mb-6">
+        <div class="flex items-center gap-3">
+          <img src="assets/wiserstack-logo.png" alt="WiserStack" class="h-6 object-contain" />
+          <span class="text-slate-300">×</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8ECF8] text-[#002060] text-xs font-bold uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-[#D4AF37]"></span> WorldMark 6 Launch Event
+          </span>
+        </div>
+        <span class="text-xs font-semibold text-slate-400">Marketing & Registration Operations</span>
+      </div>
+
+      <div class="max-w-3xl">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#002060] tracking-tight leading-tight">
+          Frictionless Guest Arrival & Real-Time Marketing Intelligence
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+          A dignified, queue-free check-in experience designed specifically for distinguished attendees, corporate leaders, and partners at WorldMark 6. Guaranteed sub-second validation, ironclad attendee privacy, and live marketing ROI metrics.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-4 gap-3.5 mt-5">
+        <div class="p-4 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div class="text-xl font-bold text-[#002060]">&lt; 0.2s</div>
+          <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mt-0.5">Scan & Admit</div>
+          <p class="text-xs text-slate-600 mt-1">Instant gate clearance with zero queue bottlenecks.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div class="text-xl font-bold text-[#002060]">100% Zero-PII</div>
+          <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mt-0.5">Gate Privacy</div>
+          <p class="text-xs text-slate-600 mt-1">Zero attendee names or contact details on volunteer screens.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div class="text-xl font-bold text-[#002060]">Flexible</div>
+          <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mt-0.5">Data Control</div>
+          <p class="text-xs text-slate-600 mt-1">Choose automated dispatch or 100% in-house data retention.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div class="text-xl font-bold text-[#D4AF37]">Live ROI</div>
+          <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mt-0.5">Outcome Metrics</div>
+          <p class="text-xs text-slate-600 mt-1">Real-time RSVP conversions and Relationship Manager footfall.</p>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-[#E8ECF8] flex items-center justify-between text-xs text-slate-500 font-medium">
+        <span>Prepared by WiserStack Event Solutions</span>
+        <span class="flex items-center gap-1.5 no-print">Press <kbd class="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-300 font-mono text-[11px] text-slate-700">Space</kbd> or <kbd class="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-300 font-mono text-[11px] text-slate-700">→</kbd> to proceed</span>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 2: Why WiserStack & Leadership Bio ================= -->
+    <section class="slide flex-col w-full bg-white rounded-2xl border border-[#E8ECF8] shadow-xl overflow-hidden p-6 sm:p-10 relative" data-index="2">
+      <div class="flex items-center justify-between border-b border-[#E8ECF8] pb-3 mb-3">
+        <div class="flex items-center gap-2">
+          <img src="assets/wiserstack-logo.png" alt="WiserStack" class="h-5 object-contain" />
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-bold text-[#002060] uppercase tracking-wider">About WiserStack</span>
+        </div>
+        <span class="text-xs text-slate-400">Battle-Tested Event Systems</span>
+      </div>
+
+      <div class="max-w-3xl">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#002060] tracking-tight">
+          Built for How Banquets & Live Events Really Work
+        </h2>
+        <p class="mt-0.5 text-xs text-slate-600 leading-relaxed">
+          We are not a generic IT services company. We build deep, AI-first technologies engineered specifically to withstand the intense pressure and arrival surges of live luxury events.
+        </p>
+      </div>
+
+      <!-- 4 Core Credibility Pillars (Horizontal 4-Col Grid) -->
+      <div class="grid grid-cols-4 gap-2.5 mt-3">
+        <div class="p-2.5 rounded-lg bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div class="text-base font-black text-[#002060]">1,200+</div>
+          <div class="text-[9.5px] font-bold text-[#5B6CB0]">Real Events Supported</div>
+          <p class="text-[8.5px] text-slate-600 mt-0.5 leading-tight">Field-tested across luxury banquets, conventions, and flagship property launches.</p>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div class="text-base font-black text-[#002060]">Patented Tech</div>
+          <div class="text-[9.5px] font-bold text-[#5B6CB0]">Proprietary AI Vision</div>
+          <p class="text-[8.5px] text-slate-600 mt-0.5 leading-tight">Years of core R&D building automated guest counting and arrival tracking.</p>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div class="text-base font-black text-[#002060]">Domain Depth</div>
+          <div class="text-[9.5px] font-bold text-[#5B6CB0]">Hospitality-Grade DNA</div>
+          <p class="text-[8.5px] text-slate-600 mt-0.5 leading-tight">We understand venue logistics, concierge flow, and queue psychology.</p>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div class="text-base font-black text-[#002060]">AI First</div>
+          <div class="text-[9.5px] font-bold text-[#5B6CB0]">Zero-Failure Architecture</div>
+          <p class="text-[8.5px] text-slate-600 mt-0.5 leading-tight">Offline-resilient stack functioning even when Wi-Fi drops completely.</p>
+        </div>
+      </div>
+
+      <!-- Core Leadership Team: 3 Horizontal Columns One Next to Another -->
+      <div class="mt-3">
+        <div class="flex items-center justify-between mb-1.5">
+          <h3 class="text-[10.5px] font-bold text-[#002060] uppercase tracking-wider">
+            Core Leadership Team
+          </h3>
+          <span class="text-[9px] text-slate-400">Directly overseeing WorldMark 6 event architecture</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <!-- Abhinav Goswami -->
+          <div class="flex items-center gap-2.5 bg-[#F5F7FD] p-2.5 rounded-xl border border-[#E8ECF8]">
+            <img src="assets/abhinav.jpg" alt="Abhinav Goswami" class="w-11 h-11 rounded-lg object-cover shrink-0 border border-slate-200" />
+            <div>
+              <div class="text-xs font-bold text-[#002060]">Abhinav Goswami</div>
+              <div class="text-[9.5px] font-semibold text-[#D4AF37]">Founder, CEO</div>
+              <div class="text-[8.5px] text-slate-500 leading-tight mt-0.5">
+                MBA (Gold Medalist) – IIM Bangalore, CA<br>
+                15+ Yrs Exp. | Product • Sales • Finance<br>
+                2X Founder
+              </div>
+            </div>
+          </div>
+
+          <!-- Prabhat Ranjan -->
+          <div class="flex items-center gap-2.5 bg-[#F5F7FD] p-2.5 rounded-xl border border-[#E8ECF8]">
+            <img src="assets/prabhat.jpg" alt="Prabhat Ranjan" class="w-11 h-11 rounded-lg object-cover shrink-0 border border-slate-200" />
+            <div>
+              <div class="text-xs font-bold text-[#002060]">Prabhat Ranjan</div>
+              <div class="text-[9.5px] font-semibold text-[#5B6CB0]">Founding Engineer</div>
+              <div class="text-[8.5px] text-slate-500 leading-tight mt-0.5">
+                OSS Contributor – Rust, JS<br>
+                8+ Yrs Full Stack & Distributed Systems<br>
+                Real-Time Offline Architectures
+              </div>
+            </div>
+          </div>
+
+          <!-- Mukilan S -->
+          <div class="flex items-center gap-2.5 bg-[#F5F7FD] p-2.5 rounded-xl border border-[#E8ECF8]">
+            <img src="assets/mukilan.jpg" alt="Mukilan S" class="w-11 h-11 rounded-lg object-cover shrink-0 border border-slate-200" />
+            <div>
+              <div class="text-xs font-bold text-[#002060]">Mukilan S</div>
+              <div class="text-[9.5px] font-semibold text-[#5B6CB0]">Founding Data Scientist</div>
+              <div class="text-[8.5px] text-slate-500 leading-tight mt-0.5">
+                Kaggle Top 1% Global Expert<br>
+                6+ Yrs Applied Machine Learning & Analytics<br>
+                Computer Vision Specialist
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-2.5 pt-2 border-t border-[#E8ECF8] flex items-center justify-between text-[10.5px] text-slate-500">
+        <span class="italic text-slate-600">“Any technology company can build software. The hard part is turning venue standards into tools that work during a live event.”</span>
+        <span class="font-semibold text-[#002060]">100% Operational Track Record</span>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 3: Proven Pedigree & Client Brands ================= -->
+    <section class="slide flex-col w-full bg-white rounded-2xl border border-[#E8ECF8] shadow-xl overflow-hidden p-6 sm:p-10 relative" data-index="3">
+      <div class="flex items-center justify-between border-b border-[#E8ECF8] pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <img src="assets/wiserstack-logo.png" alt="WiserStack" class="h-5 object-contain" />
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-bold text-[#002060] uppercase tracking-wider">Enterprise Pedigree</span>
+        </div>
+        <span class="text-xs text-slate-400">Trusted by Industry Leaders</span>
+      </div>
+
+      <div class="max-w-3xl">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#002060] tracking-tight">
+          Brands That Have Worked With Us
+        </h2>
+        <p class="mt-1 text-xs sm:text-sm text-slate-600">
+          Our systems have been trusted across India's foremost 5-star luxury hotel chains, marquee convention venues, and elite catering operators.
+        </p>
+      </div>
+
+      <!-- Clean 3-Row Logo Grid (Zero Truncation) -->
+      <div class="mt-4 bg-[#F5F7FD] p-4 rounded-xl border border-[#E8ECF8] flex flex-col justify-center">
+        <div class="rounded-lg overflow-hidden border border-slate-200 bg-white p-3 flex items-center justify-center shadow-sm">
+          <img src="assets/brands_grid_3rows.png" alt="Brands that have worked with WiserStack" class="w-full h-auto max-h-[220px] object-contain" />
+        </div>
+        
+        <div class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-[11px] text-slate-600 font-medium">
+          <div class="bg-white p-1.5 rounded border border-[#E8ECF8] font-semibold text-[#002060]">ITC Maurya & Royal Bengal</div>
+          <div class="bg-white p-1.5 rounded border border-[#E8ECF8] font-semibold text-[#002060]">Andaz (Hyatt) Delhi</div>
+          <div class="bg-white p-1.5 rounded border border-[#E8ECF8] font-semibold text-[#002060]">Radisson Udyog Vihar</div>
+          <div class="bg-white p-1.5 rounded border border-[#E8ECF8] font-semibold text-[#002060]">Crowne Plaza (IHG) Gurugram</div>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-[#E8ECF8] flex items-center justify-between text-xs text-slate-500">
+        <span class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          WorldMark 6 benefits from systems already proven at hundreds of high-stakes luxury gatherings.
+        </span>
+        <span class="font-semibold text-[#002060]">100% Operational Reliability</span>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 4: Step 1 NDA ================= -->
+    <section class="slide flex-col w-full bg-white rounded-2xl border border-[#E8ECF8] shadow-xl overflow-hidden p-6 sm:p-10 relative" data-index="4">
+      <div class="flex items-center justify-between border-b border-[#E8ECF8] pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-[#002060] text-white flex items-center justify-center text-xs font-bold">1</span>
+          <span class="text-xs font-bold text-[#002060] uppercase tracking-wider">Step 1: Trust & Security</span>
+        </div>
+        <span class="text-xs text-slate-400">Confidentiality Guarantee</span>
+      </div>
+
+      <div class="max-w-2xl">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#002060] tracking-tight">
+          Mutual Non-Disclosure Agreement (NDA) First
+        </h2>
+        <p class="mt-1 text-xs sm:text-sm text-slate-600">
+          Before any guest lists are touched, invitations structured, or hardware configured, we execute a legally binding mutual NDA with WorldMark 6.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 mt-3.5">
+        <div class="p-3.5 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8] flex flex-col justify-between">
+          <div>
+            <div class="w-7 h-7 rounded-lg bg-[#E8ECF8] flex items-center justify-center text-[#002060] mb-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <h3 class="text-xs font-bold text-[#002060]">Guest Confidentiality</h3>
+            <p class="text-[10.5px] text-slate-600 mt-1 leading-relaxed">
+              WorldMark 6 hosts high-value corporate tenants, investors, and dignitaries. Their identities and direct contact channels remain 100% confidential.
+            </p>
+          </div>
+          <div class="mt-2.5 pt-2 border-t border-slate-200 text-[9.5px] font-semibold text-emerald-700 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Legally Binding Protection
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8] flex flex-col justify-between">
+          <div>
+            <div class="w-7 h-7 rounded-lg bg-[#E8ECF8] flex items-center justify-center text-[#002060] mb-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+            <h3 class="text-xs font-bold text-[#002060]">Zero Data Monetization</h3>
+            <p class="text-[10.5px] text-slate-600 mt-1 leading-relaxed">
+              We never store attendee data longer than the event lifecycle, never cross-market, and never share records with any advertising network.
+            </p>
+          </div>
+          <div class="mt-2.5 pt-2 border-t border-slate-200 text-[9.5px] font-semibold text-emerald-700 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Automatic Post-Event Purge
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8] flex flex-col justify-between">
+          <div>
+            <div class="w-7 h-7 rounded-lg bg-[#E8ECF8] flex items-center justify-center text-[#002060] mb-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+            </div>
+            <h3 class="text-xs font-bold text-[#002060]">Clear Governance</h3>
+            <p class="text-[10.5px] text-slate-600 mt-1 leading-relaxed">
+              Explicit roles and permissions. Only authorized WorldMark 6 event directors retain permissions to access full attendee audit records.
+            </p>
+          </div>
+          <div class="mt-2.5 pt-2 border-t border-slate-200 text-[9.5px] font-semibold text-emerald-700 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            Role-Based Access Control
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 p-3 rounded-xl bg-[#002060]/5 border border-[#BCC0E8] flex items-center gap-2.5">
+        <div class="text-[#D4AF37] shrink-0">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        </div>
+        <p class="text-[11px] font-medium text-[#002060]">
+          <strong>Marketing Takeaway:</strong> You can assure your management, leasing directors, and invitees that privacy is guaranteed through standard enterprise agreements before any execution begins.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 5: Step 2 Data Sharing Choice ================= -->
+    <section class="slide flex-col w-full bg-white rounded-2xl border border-[#E8ECF8] shadow-xl overflow-hidden p-6 sm:p-10 relative" data-index="5">
+      <div class="flex items-center justify-between border-b border-[#E8ECF8] pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-[#002060] text-white flex items-center justify-center text-xs font-bold">2</span>
+          <span class="text-xs font-bold text-[#002060] uppercase tracking-wider">Step 2: Guest Data Flexibility</span>
+        </div>
+        <span class="text-xs text-slate-400">Tailored to Your Comfort Level</span>
+      </div>
+
+      <div class="max-w-3xl">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#002060] tracking-tight">
+          Option A or Option B: You Decide How Data Is Handled
+        </h2>
+        <p class="mt-1 text-xs sm:text-sm text-slate-600">
+          WorldMark 6 can choose either a turnkey automated distribution or 100% in-house private distribution without sharing any guest contact records.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mt-3.5">
+        <!-- Option A -->
+        <div class="p-4 rounded-xl border-2 border-[#002060] bg-[#F5F7FD] relative flex flex-col justify-between">
+          <div class="absolute -top-2.5 right-4 bg-[#002060] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+            Option A • Full-Service
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-[#002060] flex items-center gap-1.5">
+              <span>📬</span> You Provide Attendee Data
+            </h3>
+            <p class="text-[11px] text-slate-600 mt-1">
+              Best for effortless automated dispatch and dual-channel concierge outreach.
+            </p>
+
+            <ul class="mt-3 space-y-2">
+              <li class="flex items-start gap-2 text-[11px] text-slate-700">
+                <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[9px] mt-0.5 shrink-0">✓</span>
+                <div><strong>Centralized Branded Invites:</strong> Branded email passes dispatched automatically with entry QR.</div>
+              </li>
+              <li class="flex items-start gap-2 text-[11px] text-slate-700">
+                <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[9px] mt-0.5 shrink-0">✓</span>
+                <div><strong>Relationship Manager Packs:</strong> Dedicated sub-folders with QR images & WhatsApp copy to forward 1-on-1.</div>
+              </li>
+              <li class="flex items-start gap-2 text-[11px] text-slate-700">
+                <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[9px] mt-0.5 shrink-0">✓</span>
+                <div><strong>Live RM Scorecard:</strong> Real-time conversion tracking per Relationship Manager.</div>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-3 pt-2.5 border-t border-[#E8ECF8] text-[10px] font-bold text-[#002060]">
+            Ideal for: Multi-team marketing alignment with zero administrative overhead.
+          </div>
+        </div>
+
+        <!-- Option B -->
+        <div class="p-4 rounded-xl border border-[#BCC0E8] bg-white relative flex flex-col justify-between">
+          <div class="absolute -top-2.5 right-4 bg-[#5B6CB0] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+            Option B • Maximum Privacy
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-[#002060] flex items-center gap-1.5">
+              <span>🛡️</span> You Keep Attendee Data In-House
+            </h3>
+            <p class="text-[11px] text-slate-600 mt-1">
+              Best when organizational compliance prohibits sharing guest contact lists.
+            </p>
+
+            <ul class="mt-3 space-y-2">
+              <li class="flex items-start gap-2 text-[11px] text-slate-700">
+                <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[9px] mt-0.5 shrink-0">✓</span>
+                <div><strong>Pre-Generated Token Badges:</strong> Bulk archive of unique cryptographic QR images (Pass #001 to #400).</div>
+              </li>
+              <li class="flex items-start gap-2 text-[11px] text-slate-700">
+                <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[9px] mt-0.5 shrink-0">✓</span>
+                <div><strong>Secure Pass Links:</strong> Private web pass URLs ready to merge with your in-house email/CRM tools.</div>
+              </li>
+              <li class="flex items-start gap-2 text-[11px] text-slate-700">
+                <span class="w-3.5 h-3.5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[9px] mt-0.5 shrink-0">✓</span>
+                <div><strong>Zero External PII:</strong> We never receive names or phones. The desk verifies purely anonymous tokens.</div>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-3 pt-2.5 border-t border-[#E8ECF8] text-[10px] font-bold text-slate-600">
+            Ideal for: Strict institutional confidentiality or private investor lists.
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-[#E8ECF8] flex items-center justify-between text-[11px] text-slate-500">
+        <span>Both options integrate identically into the high-touch WhatsApp and registration desk flow.</span>
+        <span class="font-semibold text-[#002060]">Your Data, Your Governance</span>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 6: Step 3 Visual Invitation Flow (WhatsApp + Mobile Pass) ================= -->
+    <section class="slide flex-col w-full bg-white rounded-2xl border border-[#E8ECF8] shadow-xl overflow-hidden p-6 sm:p-10 relative" data-index="6">
+      <div class="flex items-center justify-between border-b border-[#E8ECF8] pb-3 mb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-[#002060] text-white flex items-center justify-center text-xs font-bold">3</span>
+          <span class="text-xs font-bold text-[#002060] uppercase tracking-wider">Step 3: The High-Touch Guest Experience</span>
+        </div>
+        <span class="text-xs text-slate-400">Personal WhatsApp & Mobile Pass</span>
+      </div>
+
+      <div class="max-w-3xl">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#002060] tracking-tight">
+          How Guests Receive & Confirm Their Pass
+        </h2>
+        <p class="mt-0.5 text-xs text-slate-600">
+          Relationship Managers personally send polished WhatsApp invites with an interactive pass link and attached QR pass image.
+        </p>
+      </div>
+
+      <!-- Side-by-Side Step-Wise Visual Journey: WhatsApp Chat (Step 1) + Mobile Pass (Step 2) -->
+      <div class="grid grid-cols-2 gap-8 mt-2.5 items-start">
+        <!-- Step 1: WhatsApp Interface Mockup -->
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2 mb-1.5 px-1">
+            <span class="w-5 h-5 rounded-full bg-[#075E54] text-white flex items-center justify-center text-[10px] font-bold">1</span>
+            <span class="text-xs font-bold text-[#002060]">Relationship Manager WhatsApp Outreach</span>
+          </div>
+
+          <div class="max-w-[330px] w-full mx-auto bg-slate-900 rounded-xl p-2 shadow-xl border-2 border-slate-700">
+            <!-- WhatsApp Header -->
+            <div class="bg-[#075E54] text-white px-2.5 py-1.5 rounded-t-lg flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-white text-[10px] font-bold">
+                  WM
+                </div>
+                <div>
+                  <div class="text-[11px] font-bold leading-tight flex items-center gap-1">
+                    Vikram Malhotra <span class="text-emerald-300 text-[9px]">✓</span>
+                  </div>
+                  <div class="text-[8.5px] text-emerald-100">WorldMark 6 RM • Online</div>
+                </div>
+              </div>
+              <span class="text-[9px] text-emerald-200 font-medium">Personal Invite</span>
+            </div>
+
+            <!-- WhatsApp Chat Body -->
+            <div class="bg-[#EFEAE2] p-2.5 rounded-b-lg space-y-1.5">
+              <!-- Date Badge -->
+              <div class="text-center">
+                <span class="px-2 py-0.5 rounded bg-white/80 text-slate-600 text-[8.5px] font-medium shadow-xs">TODAY</span>
+              </div>
+
+              <!-- Outgoing Invite Message Bubble -->
+              <div class="ml-auto max-w-[94%] bg-[#D9FDD3] rounded-lg p-2 shadow-xs text-slate-800 text-[10.5px] space-y-1.5 border border-emerald-200">
+                <p class="leading-snug">
+                  Dear Mr. Kapoor,<br>
+                  It is our privilege to invite you to the <strong>WorldMark 6 Launch Event</strong> on Friday, Oct 24 at the Grand Ballroom.
+                </p>
+
+                <!-- Link Card inside bubble -->
+                <div class="bg-white/95 rounded border border-slate-200 p-1 flex items-center gap-2">
+                  <div class="w-7 h-7 rounded bg-[#002060] text-white flex items-center justify-center font-bold text-[9px] shrink-0">
+                    WM6
+                  </div>
+                  <div class="overflow-hidden">
+                    <div class="text-[9.5px] font-bold text-[#002060] truncate">View Your Entry Pass & RSVP</div>
+                    <div class="text-[8.5px] text-slate-500 font-mono truncate">worldmark6.com/pass/WM6-409</div>
+                  </div>
+                </div>
+
+                <!-- Attached QR Pass snippet -->
+                <div class="bg-white rounded border border-slate-200 p-1 flex items-center justify-between">
+                  <div class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-[#002060]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+                    <span class="text-[8.5px] font-medium text-slate-600">Attached: Pass_WM6-409.png</span>
+                  </div>
+                  <span class="text-[8.5px] text-blue-600 font-bold">11:42 AM ✓✓</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Mobile Web Pass Mockup -->
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2 mb-1.5 px-1">
+            <span class="w-5 h-5 rounded-full bg-[#002060] text-white flex items-center justify-center text-[10px] font-bold">2</span>
+            <span class="text-xs font-bold text-[#002060]">Guest Mobile Pass & 1-Tap RSVP</span>
+          </div>
+
+          <div class="max-w-[330px] w-full mx-auto bg-slate-900 rounded-xl p-2 shadow-xl border-2 border-slate-700 flex flex-col items-center">
+            <div class="w-full bg-white rounded-lg p-2.5 flex flex-col items-center text-center">
+              <div class="px-2 py-0.5 rounded-full bg-[#E8ECF8] text-[#002060] text-[8.5px] font-bold uppercase tracking-wider mb-0.5">
+                WorldMark 6 Launch
+              </div>
+              <h5 class="text-[11px] font-black text-[#002060]">GUEST INVITATION PASS</h5>
+              <p class="text-[8.5px] text-slate-500">Friday, Oct 24 • Grand Ballroom, Aerocity</p>
+
+              <!-- QR Code -->
+              <div class="my-1.5 p-1.5 bg-white border border-[#E8ECF8] rounded-lg shadow-xs">
+                <svg class="w-14 h-14 text-[#002060]" viewBox="0 0 100 100" fill="currentColor">
+                  <path d="M10 10h30v30h-30zM15 15v20h20v-20zM20 20h10v10h-10zM60 10h30v30h-30zM65 15v20h20v-20zM70 20h10v10h-10zM10 60h30v30h-30zM15 65v20h20v-20zM20 70h10v10h-10zM50 10h5v15h-5zM50 35h5v15h-5zM10 50h15v5h-15zM35 50h15v5h-15zM60 50h10v10h-10zM75 50h15v5h-15zM60 65h5v25h-5zM70 75h10v15h-10zM85 65h5v25h-5z"/>
+                </svg>
+                <div class="text-[8px] font-mono text-slate-400 mt-0.5">PASS ID: WM6-409</div>
+              </div>
+
+              <!-- 1-Tap RSVP Buttons -->
+              <div class="w-full space-y-1">
+                <div class="w-full py-0.5 rounded bg-[#002060] text-white text-[9.5px] font-bold flex items-center justify-center gap-1 shadow-xs">
+                  <span>✓</span> Attending (Yes)
+                </div>
+                <div class="flex gap-1">
+                  <div class="flex-1 py-0.5 rounded bg-slate-100 text-slate-600 text-[8.5px] font-semibold">Maybe</div>
+                  <div class="flex-1 py-0.5 rounded bg-slate-100 text-slate-600 text-[8.5px] font-semibold">Decline</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-1.5 w-full px-2 text-center">
+              <span class="text-[9.5px] text-emerald-400 font-semibold">★ Valid QR passes are always admitted unconditionally at the door</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-2 pt-2 border-t border-[#E8ECF8] flex items-center justify-between text-[10.5px] text-slate-500">
+        <span>Personal 1-on-1 WhatsApp builds warmth while the digital pass guarantees instant entry.</span>
+        <span class="font-semibold text-[#002060]">High-Touch Luxury Hospitality</span>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 7: Combined Desk Scan & Wristband Flow ================= -->
+    <section class="slide flex-col w-full bg-white rounded-2xl border border-[#E8ECF8] shadow-xl overflow-hidden p-6 sm:p-10 relative" data-index="7">
+      <div class="flex items-center justify-between border-b border-[#E8ECF8] pb-3 mb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-[#002060] text-white flex items-center justify-center text-xs font-bold">4</span>
+          <span class="text-xs font-bold text-[#002060] uppercase tracking-wider">Step 4: Rapid Scan & Official Wristband</span>
+        </div>
+        <span class="text-xs text-slate-400">Zero Queue & Complete In-Venue Freedom</span>
+      </div>
+
+      <div class="max-w-3xl">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#002060] tracking-tight">
+          Sub-Second Verification & Event Wristband Issuance
+        </h2>
+        <p class="mt-0.5 text-xs text-slate-600">
+          Guests present their QR badge, verified in under 0.2s with zero attendee PII displayed. Valid scans receive the official <strong>WorldMark New Delhi fabric wristband</strong> for total venue re-entry freedom.
+        </p>
+      </div>
+
+      <!-- Step-Wise 3-Column Visual Flow: Step 1 Scan -> Step 2 Zero-PII Screen -> Step 3 Wristband -->
+      <div class="grid grid-cols-3 gap-3.5 mt-2.5 items-stretch">
+        <!-- Step 1: Rapid 2D Optical Scan -->
+        <div class="flex flex-col justify-between p-3 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="px-2 py-0.5 rounded bg-[#002060] text-white text-[9px] font-bold uppercase tracking-wider">Step 1</span>
+              <span class="text-[8.5px] font-semibold text-emerald-600 font-mono">&lt; 0.2s Laser Scan</span>
+            </div>
+            <h3 class="text-xs font-bold text-[#002060]">High-Speed Optical Scan</h3>
+            <p class="text-[9.5px] text-slate-600 mt-1 leading-snug">
+              High-speed 2D presentation scanners read phone QR badges or printed passes instantly with zero touch and zero delay.
+            </p>
+
+            <!-- Optical Scanner Graphic / Card -->
+            <div class="mt-2.5 p-2 bg-slate-900 rounded-lg border border-slate-700 text-center flex flex-col items-center">
+              <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+              </div>
+              <div class="text-[9.5px] font-mono text-emerald-400 font-bold">14ms Optical Verification</div>
+              <div class="text-[8px] text-slate-400 mt-0.5">100% Offline-Resilient (No Wi-Fi Drops)</div>
+            </div>
+          </div>
+          <div class="mt-2 pt-1.5 border-t border-[#E8ECF8] text-[9px] text-slate-500 font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Sub-second queue clearance
+          </div>
+        </div>
+
+        <!-- Step 2: Zero-PII Verification Screen -->
+        <div class="flex flex-col justify-between p-3 rounded-xl bg-slate-900 border-2 border-slate-700 shadow-lg text-white">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="px-2 py-0.5 rounded bg-emerald-500 text-slate-900 text-[9px] font-bold uppercase tracking-wider">Step 2</span>
+              <span class="text-[8.5px] font-semibold text-emerald-300 font-mono">Lane 01 • Active</span>
+            </div>
+            <h3 class="text-xs font-bold text-white">Zero-PII Gate Screen</h3>
+            <p class="text-[9.5px] text-slate-300 mt-1 leading-snug">
+              Volunteers see only pass validity. Names, phones, and corporate records are 100% hidden from onlookers.
+            </p>
+
+            <!-- Terminal Screen Mockup -->
+            <div class="mt-2.5 bg-emerald-600 rounded-lg p-2 text-center shadow-inner border border-emerald-500">
+              <div class="text-[8px] uppercase font-bold text-emerald-100">Gate Verification</div>
+              <div class="text-sm font-black tracking-tight mt-0.5">VALID PASS — ADMIT</div>
+              <div class="mt-1 flex items-center justify-center gap-1.5">
+                <span class="px-1.5 py-0.5 bg-white/20 text-white font-mono text-[8px] rounded">PASS: WM6-409</span>
+                <span class="px-1.5 py-0.5 bg-[#D4AF37] text-[#002060] font-bold text-[8px] rounded">LAUNCH ACCESS</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2 pt-1.5 border-t border-slate-800 text-[9px] text-emerald-300 font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Ironclad attendee privacy guaranteed
+          </div>
+        </div>
+
+        <!-- Step 3: Official Fabric Wristband Issued -->
+        <div class="flex flex-col justify-between p-3 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8]">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="px-2 py-0.5 rounded bg-[#D4AF37] text-[#002060] text-[9px] font-bold uppercase tracking-wider">Step 3</span>
+              <span class="text-[8.5px] font-semibold text-slate-500">Free In-Venue Flow</span>
+            </div>
+            <h3 class="text-xs font-bold text-[#002060]">Official WorldMark Wristband</h3>
+
+            <!-- Fabric Wristband Reference Photo (Fitted, Proportional!) -->
+            <div class="mt-2 rounded-lg overflow-hidden border border-slate-300 shadow-xs bg-white">
+              <img src="assets/worldmark_wristband.jpg" alt="Official WorldMark New Delhi Wristband" class="w-full h-[90px] object-cover" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-1.5 mt-2">
+              <div class="p-1 bg-white rounded border border-[#E8ECF8]">
+                <div class="text-[8.5px] font-bold text-[#002060]">Seamless Re-Entry</div>
+                <p class="text-[7.5px] text-slate-600 mt-0.5 leading-tight">Free movement to terrace or valet without re-scanning.</p>
+              </div>
+              <div class="p-1 bg-white rounded border border-[#E8ECF8]">
+                <div class="text-[8.5px] font-bold text-[#002060]">Discreet Helpdesk</div>
+                <p class="text-[7.5px] text-slate-600 mt-0.5 leading-tight">Unrecognized passes route to concierge quietly.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2 pt-1.5 border-t border-[#E8ECF8] text-[9px] text-slate-500 font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#002060]"></span> One-time desk scan • Complete freedom
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-2.5 pt-2 border-t border-[#E8ECF8] flex items-center justify-between text-[10.5px] text-slate-500">
+        <span class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          100% Offline-Resilient: Keeps scanning active (&lt;10ms) even if hotel Wi-Fi drops completely.
+        </span>
+        <span class="font-semibold text-[#002060]">One-Time Scan • Total Freedom</span>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 8: Step 5 Marketing Command Center ================= -->
+    <section class="slide flex-col w-full bg-white rounded-2xl border border-[#E8ECF8] shadow-xl overflow-hidden p-6 sm:p-10 relative" data-index="8">
+      <div class="flex items-center justify-between border-b border-[#E8ECF8] pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-[#002060] text-white flex items-center justify-center text-xs font-bold">5</span>
+          <span class="text-xs font-bold text-[#002060] uppercase tracking-wider">Step 5: Marketing Outcomes</span>
+        </div>
+        <span class="text-xs text-slate-400">Real-Time Event Command Center</span>
+      </div>
+
+      <div class="max-w-3xl">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#002060] tracking-tight">
+          Live Intelligence to Measure Event Marketing ROI
+        </h2>
+        <p class="mt-1 text-xs sm:text-sm text-slate-600">
+          The WorldMark 6 marketing team gets an executive dashboard displaying every critical metric in real time—from initial RSVP confirmations to actual physical venue turnout.
+        </p>
+      </div>
+
+      <!-- Dashboard Mockup -->
+      <div class="mt-3 p-3 rounded-xl bg-[#F5F7FD] border border-[#E8ECF8]">
+        <!-- Top Metrics Cards (4 Columns) -->
+        <div class="grid grid-cols-4 gap-2.5">
+          <div class="p-2 bg-white rounded-lg border border-[#E8ECF8]">
+            <span class="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">Total Invited</span>
+            <div class="text-base font-black text-[#002060] mt-0.5">400</div>
+            <div class="text-[8px] text-slate-500">100% Passes Generated</div>
+          </div>
+          <div class="p-2 bg-white rounded-lg border border-[#E8ECF8]">
+            <span class="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">RSVP Confirmed</span>
+            <div class="text-base font-black text-[#002060] mt-0.5">342</div>
+            <div class="text-[8px] text-emerald-600 font-semibold">85.5% Yes Rate</div>
+          </div>
+          <div class="p-2 bg-white rounded-lg border border-[#E8ECF8]">
+            <span class="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">Checked In (Turnout)</span>
+            <div class="text-base font-black text-emerald-600 mt-0.5">289</div>
+            <div class="text-[8px] text-slate-500">72.2% Live Attendance</div>
+          </div>
+          <div class="p-2 bg-white rounded-lg border border-[#E8ECF8]">
+            <span class="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider">Peak Velocity</span>
+            <div class="text-base font-black text-[#D4AF37] mt-0.5">42 / 15m</div>
+            <div class="text-[8px] text-slate-500">Zero desk bottlenecks</div>
+          </div>
+        </div>
+
+        <!-- Middle Section: RM Scorecard (7 cols) + Real-Time Operational Insights (5 cols) -->
+        <div class="grid grid-cols-12 gap-3 mt-2.5 items-stretch">
+          <!-- RM Scorecard Table (7 Cols) -->
+          <div class="col-span-7 bg-white rounded-lg border border-[#E8ECF8] overflow-hidden flex flex-col justify-between">
+            <div>
+              <div class="px-2.5 py-1.5 bg-slate-50 border-b border-[#E8ECF8] flex items-center justify-between">
+                <span class="text-[10px] font-bold text-[#002060]">Relationship Manager (RM) Scorecard</span>
+                <span class="text-[8px] font-semibold text-emerald-600">● Live Updates</span>
+              </div>
+              <table class="w-full text-left">
+                <thead class="bg-slate-50/50 text-[8px] text-slate-400 uppercase font-semibold border-b border-slate-100">
+                  <tr>
+                    <th class="py-1 px-2.5">RM & Focus Group</th>
+                    <th class="py-1 px-1.5 text-center">Invited</th>
+                    <th class="py-1 px-1.5 text-center">RSVP</th>
+                    <th class="py-1 px-1.5 text-center">Attended</th>
+                    <th class="py-1 px-2 text-right">Turnout</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700 text-[9.5px]">
+                  <tr>
+                    <td class="py-1 px-2.5 font-semibold text-[#002060]">Vikram Malhotra (Institutional)</td>
+                    <td class="py-1 px-1.5 text-center">50</td>
+                    <td class="py-1 px-1.5 text-center text-emerald-600">48</td>
+                    <td class="py-1 px-1.5 text-center font-bold text-emerald-600">44</td>
+                    <td class="py-1 px-2 text-right font-bold text-[#002060]">88.0%</td>
+                  </tr>
+                  <tr>
+                    <td class="py-1 px-2.5 font-semibold text-[#002060]">Ananya Sharma (Corporate Tenants)</td>
+                    <td class="py-1 px-1.5 text-center">65</td>
+                    <td class="py-1 px-1.5 text-center text-emerald-600">59</td>
+                    <td class="py-1 px-1.5 text-center font-bold text-emerald-600">51</td>
+                    <td class="py-1 px-2 text-right font-bold text-[#002060]">78.5%</td>
+                  </tr>
+                  <tr>
+                    <td class="py-1 px-2.5 font-semibold text-[#002060]">Rohan Verma (Retail & Dining)</td>
+                    <td class="py-1 px-1.5 text-center">40</td>
+                    <td class="py-1 px-1.5 text-center text-emerald-600">34</td>
+                    <td class="py-1 px-1.5 text-center font-bold text-emerald-600">30</td>
+                    <td class="py-1 px-2 text-right font-bold text-[#002060]">75.0%</td>
+                  </tr>
+                  <tr>
+                    <td class="py-1 px-2.5 font-semibold text-[#002060]">Priya Nair (Chambers & Consulates)</td>
+                    <td class="py-1 px-1.5 text-center">35</td>
+                    <td class="py-1 px-1.5 text-center text-emerald-600">31</td>
+                    <td class="py-1 px-1.5 text-center font-bold text-emerald-600">28</td>
+                    <td class="py-1 px-2 text-right font-bold text-[#002060]">80.0%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="px-2.5 py-1 bg-slate-50 border-t border-slate-100 text-[8px] text-slate-500 flex justify-between">
+              <span>Updated automatically with each laser desk scan</span>
+              <span class="font-bold text-[#002060]">Reconciled Attendance</span>
+            </div>
+          </div>
+
+          <!-- Real-Time Marketing Action Center (5 Cols) -->
+          <div class="col-span-5 bg-white p-2.5 rounded-lg border border-[#E8ECF8] flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] font-bold text-[#002060] flex items-center justify-between pb-1 border-b border-[#E8ECF8]">
+                <span>Marketing Action Center</span>
+                <span class="text-[8px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800">AUTOMATED</span>
+              </div>
+
+              <div class="space-y-1.5 mt-1.5">
+                <div class="p-1.5 rounded bg-[#F5F7FD] border border-[#E8ECF8]">
+                  <div class="text-[9px] font-bold text-[#002060] flex items-center gap-1">
+                    <span>⚡</span> Instant VIP Arrival Ping
+                  </div>
+                  <p class="text-[8px] text-slate-600 mt-0.5 leading-tight">
+                    Relationship Managers receive an automatic SMS notification the moment their key anchor tenant checks in.
+                  </p>
+                </div>
+
+                <div class="p-1.5 rounded bg-[#F5F7FD] border border-[#E8ECF8]">
+                  <div class="text-[9px] font-bold text-[#002060] flex items-center gap-1">
+                    <span>📊</span> 2:00 PM Unconfirmed Follow-Up
+                  </div>
+                  <p class="text-[8px] text-slate-600 mt-0.5 leading-tight">
+                    One-click filter for guests who haven't RSVP'd yet, allowing RMs to dispatch a polite afternoon WhatsApp nudge.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-1.5 pt-1 border-t border-slate-100 text-[8px] text-slate-400">
+              Live data streamed via encrypted WebSockets to executive tablets.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3.5 pt-2.5 border-t border-[#E8ECF8] flex items-center justify-between text-xs text-slate-600">
+        <span class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Exportable to CSV anytime for instant CRM synchronization (HubSpot, Zoho, Salesforce).
+        </span>
+        <span class="font-semibold text-[#002060]">Accurate Post-Event Debrief</span>
+      </div>
+    </section>
+
+    <!-- ================= SLIDE 9: Roadmap & Executive Contact ================= -->
+    <section class="slide flex-col w-full bg-white rounded-2xl border border-[#E8ECF8] shadow-xl overflow-hidden p-6 sm:p-10 relative" data-index="9">
+      <div class="flex items-center justify-between border-b border-[#E8ECF8] pb-3 mb-4">
+        <div class="flex items-center gap-2">
+          <img src="assets/wiserstack-logo.png" alt="WiserStack" class="h-5 object-contain" />
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-bold text-[#002060] uppercase tracking-wider">Next Steps & Coordination</span>
+        </div>
+        <span class="text-xs text-slate-400">Launch Readiness</span>
+      </div>
+
+      <div class="max-w-3xl">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-[#002060] tracking-tight">
+          Ready for WorldMark 6 Launch Day
+        </h2>
+        <p class="mt-1 text-xs sm:text-sm text-slate-600">
+          Everything is engineered for speed, dignified guest arrival, and delivering concrete marketing proof points.
+        </p>
+      </div>
+
+      <!-- 4 Milestones Grid (Horizontal 4 Columns) -->
+      <div class="grid grid-cols-4 gap-2.5 mt-2.5">
+        <div class="p-2.5 rounded-lg bg-[#F5F7FD] border border-[#E8ECF8] flex items-start gap-2">
+          <div class="w-5 h-5 rounded-full bg-[#002060] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
+            1
+          </div>
+          <div>
+            <h4 class="text-[11px] font-bold text-[#002060]">Mutual NDA Sign-Off</h4>
+            <p class="text-[9px] text-slate-600 mt-0.5 leading-tight">Execution of enterprise confidentiality agreement protecting all attendee data.</p>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-[#F5F7FD] border border-[#E8ECF8] flex items-start gap-2">
+          <div class="w-5 h-5 rounded-full bg-[#002060] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
+            2
+          </div>
+          <div>
+            <h4 class="text-[11px] font-bold text-[#002060]">Select Data Pathway</h4>
+            <p class="text-[9px] text-slate-600 mt-0.5 leading-tight">Confirm Option A (turnkey email + RM packs) or Option B (100% in-house tokens).</p>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-[#F5F7FD] border border-[#E8ECF8] flex items-start gap-2">
+          <div class="w-5 h-5 rounded-full bg-[#002060] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
+            3
+          </div>
+          <div>
+            <h4 class="text-[11px] font-bold text-[#002060]">QR Passes & RM Packs</h4>
+            <p class="text-[9px] text-slate-600 mt-0.5 leading-tight">Generation of cryptographic passes, branded links, and RM WhatsApp bundles.</p>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-[#F5F7FD] border border-[#E8ECF8] flex items-start gap-2">
+          <div class="w-5 h-5 rounded-full bg-[#002060] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
+            4
+          </div>
+          <div>
+            <h4 class="text-[11px] font-bold text-[#002060]">Desk Setup & Live Run</h4>
+            <p class="text-[9px] text-slate-600 mt-0.5 leading-tight">Pre-event desk dry-run at WorldMark 6 with fast 2D scanners, wristbands & dashboard.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 On-Site SLA Guarantees Grid (3 Columns) -->
+      <div class="grid grid-cols-3 gap-2.5 mt-2.5">
+        <div class="p-2.5 rounded-lg bg-white border border-[#E8ECF8] flex items-start gap-2 shadow-xs">
+          <div class="w-6 h-6 rounded-md bg-[#E8ECF8] text-[#002060] flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold text-[#002060]">Turnkey Hardware Provided</div>
+            <p class="text-[8.5px] text-slate-600 mt-0.5 leading-tight">High-speed 2D optical presentation scanners, staff terminal tablets, and stand mounts.</p>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-white border border-[#E8ECF8] flex items-start gap-2 shadow-xs">
+          <div class="w-6 h-6 rounded-md bg-[#E8ECF8] text-[#002060] flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold text-[#002060]">Dedicated On-Site Leads</div>
+            <p class="text-[8.5px] text-slate-600 mt-0.5 leading-tight">WiserStack engineering leads on ground 2 hours prior to arrival through event wrap.</p>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-lg bg-white border border-[#E8ECF8] flex items-start gap-2 shadow-xs">
+          <div class="w-6 h-6 rounded-md bg-[#E8ECF8] text-[#002060] flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold text-[#002060]">60-Min Reconciled Audit</div>
+            <p class="text-[8.5px] text-slate-600 mt-0.5 leading-tight">Complete attendance and RM conversion CSV delivered to marketing leadership within 1 hour.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Executive Contact Card -->
+      <div class="mt-2.5 p-3 rounded-xl bg-[#002060] text-white flex items-center justify-between gap-4 shadow-lg border border-[#BCC0E8]/30">
+        <div class="flex items-center gap-3">
+          <img src="assets/abhinav.jpg" alt="Abhinav Goswami" class="w-11 h-11 rounded-lg object-cover border-2 border-[#D4AF37] shadow-sm shrink-0" />
+          <div>
+            <div class="text-[9px] font-bold text-[#D4AF37] uppercase tracking-wider">Executive Contact • WiserStack</div>
+            <h3 class="text-sm font-bold text-white leading-tight">Abhinav Goswami</h3>
+            <p class="text-[10px] text-[#BCC0E8]">Founder & CEO • MBA (Gold Medalist, IIM Bangalore), CA</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <a href="mailto:abhinav@wiserstack.com" class="px-3 py-1.5 rounded-lg bg-white text-[#002060] font-bold text-[11px] flex items-center gap-1.5 shadow-xs hover:bg-slate-100 transition">
+            <svg class="w-3 h-3 text-[#002060]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            abhinav@wiserstack.com
+          </a>
+          <a href="tel:+918929911811" class="px-3 py-1.5 rounded-lg bg-[#D4AF37] text-[#002060] font-bold text-[11px] flex items-center gap-1.5 shadow-xs hover:brightness-105 transition">
+            <svg class="w-3 h-3 text-[#002060]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            +91-8929911811
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-2 pt-1.5 border-t border-[#E8ECF8] flex items-center justify-between text-[10px] text-slate-500">
+        <span>Available immediately to align on data governance and schedule on-site dry runs.</span>
+        <span class="font-semibold text-[#002060]">Turnkey Operational Assurance</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Global Footer -->
+  <footer class="no-print bg-white border-t border-[#E8ECF8] py-2.5 px-6 text-center text-xs text-slate-500 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+      <span class="font-medium text-slate-600">WorldMark 6 Launch Event • Technical System Ready</span>
+    </div>
+    <div class="text-[11px] text-slate-400">
+      Navigate with <span class="font-semibold text-slate-600">Arrow Keys</span> or <span class="font-semibold text-slate-600">Spacebar</span>
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 9;
+
+    function renderDots() {
+      const dotsContainer = document.getElementById('dotsContainer');
+      dotsContainer.innerHTML = '';
+      for (let i = 1; i <= totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${i === currentSlide ? 'bg-[#002060] w-5' : 'bg-slate-300 hover:bg-slate-400'}`;
+        dot.title = `Jump to Slide ${i}`;
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function updateSlide() {
+      document.querySelectorAll('.slide').forEach(slide => {
+        slide.classList.remove('active');
+        if (parseInt(slide.getAttribute('data-index')) === currentSlide) {
+          slide.classList.add('active');
+        }
+      });
+      document.getElementById('slideCounter').textContent = `${currentSlide} / ${totalSlides}`;
+      renderDots();
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        updateSlide();
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+
+    // Touch swipe support
+    let touchstartX = 0;
+    let touchendX = 0;
+    document.addEventListener('touchstart', e => {
+      touchstartX = e.changedTouches[0].screenX;
+    });
+    document.addEventListener('touchend', e => {
+      touchendX = e.changedTouches[0].screenX;
+      if (touchendX < touchstartX - 50) nextSlide();
+      if (touchendX > touchstartX + 50) prevSlide();
+    });
+
+    renderDots();
+  </script>
+</body>
+</html>
